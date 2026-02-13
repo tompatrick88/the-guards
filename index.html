@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Guards — Coastal Apparel for the Watchful</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ocean-teal: #2B7A7A;
+      --ocean-teal-dark: #1E5E5E;
+      --guard-red: #D64545;
+      --sand-cream: #F5E6D3;
+      --deep-navy: #1A3A52;
+      --sunset-orange: #E8915B;
+      --wave-white: #FEFEF9;
+      --charcoal: #2D2D2D;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: var(--deep-navy);
+      background: var(--wave-white);
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    .grain {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(43, 122, 122, 0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: var(--wave-white);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--wave-white);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(170deg, #1a5c5c 0%, var(--ocean-teal) 40%, #2d8a8a 70%, #1E5E5E 100%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(232,145,91,0.12) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(214,69,69,0.08) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Life ring SVG logo */
+    .life-ring {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 2rem;
+      animation: fadeUp 1s ease-out 0.3s both;
+    }
+
+    .life-ring svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 4px 20px rgba(0,0,0,0.2));
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      color: var(--wave-white);
+      letter-spacing: 8px;
+      line-height: 1;
+      margin-bottom: 1rem;
+      animation: fadeUp 1s ease-out 0.5s both;
+    }
+
+    .hero .tagline {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+      color: var(--sand-cream);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s ease-out 0.7s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: fadeUp 1s ease-out 0.9s both;
+    }
+
+    .btn {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: var(--guard-red);
+      color: var(--wave-white);
+      border-radius: 3px;
+    }
+
+    .btn-primary:hover {
+      background: #c33a3a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(214,69,69,0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--wave-white);
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 3px;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--wave-white);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .scroll-indicator span {
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid rgba(255,255,255,0.5);
+      border-bottom: 2px solid rgba(255,255,255,0.5);
+      transform: rotate(45deg);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Section styling */
+    section { padding: 6rem 2rem; }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 4px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--ocean-teal);
+      margin-bottom: 3rem;
+    }
+
+    /* Products Section */
+    .products {
+      background: var(--wave-white);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    }
+
+    .product-image {
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image .product-icon {
+      font-size: 5rem;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-info h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .product-info .product-desc {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-info .price {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--deep-navy);
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 6px;
+      margin-top: 0.5rem;
+    }
+
+    .swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,0,0,0.1);
+    }
+
+    /* Story Section */
+    .story {
+      background: var(--ocean-teal);
+      color: var(--wave-white);
+      position: relative;
+    }
+
+    .story-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .story-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .seagull-container {
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10rem;
+      position: relative;
+    }
+
+    .seagull-container::after {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+    }
+
+    .story-text h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      letter-spacing: 4px;
+      margin-bottom: 1.5rem;
+    }
+
+    .story-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--sand-cream);
+      margin-bottom: 1rem;
+    }
+
+    .story-text .highlight {
+      color: var(--sunset-orange);
+      font-weight: 600;
+    }
+
+    /* Collection Categories */
+    .collections {
+      background: var(--sand-cream);
+    }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .collection-card {
+      background: white;
+      border-radius: 8px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .collection-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .collection-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .collection-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .collection-card p {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    /* Values strip */
+    .values {
+      background: var(--deep-navy);
+      color: var(--wave-white);
+      padding: 4rem 2rem;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .value-item h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+      color: var(--sunset-orange);
+    }
+
+    .value-item p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Email signup */
+    .signup {
+      background: var(--ocean-teal);
+      text-align: center;
+      color: var(--wave-white);
+      position: relative;
+    }
+
+    .signup h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 4px;
+      margin-bottom: 0.75rem;
+    }
+
+    .signup p {
+      font-size: 1rem;
+      color: var(--sand-cream);
+      margin-bottom: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .signup-form {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+      margin: 0 auto 1rem;
+    }
+
+    .signup-form input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: none;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.9rem;
+      border-radius: 3px 0 0 3px;
+      outline: none;
+    }
+
+    .signup-form button {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      background: var(--guard-red);
+      color: white;
+      border: none;
+      border-radius: 0 3px 3px 0;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .signup-form button:hover {
+      background: #c33a3a;
+    }
+
+    .signup .fine-print {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.6);
+      padding: 3rem 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-brand .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--wave-white);
+      letter-spacing: 3px;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    footer h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--wave-white);
+      margin-bottom: 1rem;
+    }
+
+    footer ul {
+      list-style: none;
+    }
+
+    footer ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    footer ul a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: color 0.2s;
+    }
+
+    footer ul a:hover {
+      color: var(--sand-cream);
+    }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 2rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .story-container { grid-template-columns: 1fr; text-align: center; }
+      .story-visual { order: -1; }
+      .seagull-container { width: 200px; height: 200px; font-size: 6rem; }
+      .collection-grid { grid-template-columns: repeat(2, 1fr); }
+      .values-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .signup-form { flex-direction: column; }
+      .signup-form input { border-radius: 3px; }
+      .signup-form button { border-radius: 3px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+
+  <!-- Navigation -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">THE GUARDS</a>
+    <ul class="nav-links">
+      <li><a href="#products">Shop</a></li>
+      <li><a href="#story">Story</a></li>
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="life-ring">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#F5E6D3" stroke-width="28"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#D64545" stroke-width="28"
+            stroke-dasharray="31.4 31.4" stroke-dashoffset="-7.85"/>
+          <circle cx="100" cy="100" r="66" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="2"/>
+          <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="2"/>
+          <text x="100" y="95" text-anchor="middle" font-family="Bebas Neue, sans-serif"
+            font-size="18" fill="#F5E6D3" letter-spacing="2">THE</text>
+          <text x="100" y="113" text-anchor="middle" font-family="Bebas Neue, sans-serif"
+            font-size="18" fill="#F5E6D3" letter-spacing="2">GUARDS</text>
+        </svg>
+      </div>
+      <h1>THE GUARDS</h1>
+      <p class="tagline">Coastal Apparel for the Watchful</p>
+      <div class="hero-buttons">
+        <a href="#products" class="btn btn-primary">Shop the Collection</a>
+        <a href="#story" class="btn btn-outline">Our Story</a>
+      </div>
+    </div>
+    <div class="scroll-indicator"><span></span></div>
+  </section>
+
+  <!-- Featured Products -->
+  <section id="products" class="products" style="padding: 6rem 2rem;">
+    <h2 class="section-title" style="color: var(--deep-navy);">Built for the Coast</h2>
+    <p class="section-subtitle">Core Collection</p>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-image" style="background: linear-gradient(135deg, #2B7A7A 0%, #3a9999 100%);">
+          <span class="product-icon">👕</span>
+        </div>
+        <div class="product-info">
+          <h3>The Original Pocket Tee</h3>
+          <p class="product-desc">Left chest life ring. Soft-wash cotton. Built to last.</p>
+          <span class="price">$34</span>
+          <div class="color-swatches">
+            <span class="swatch" style="background: #2B7A7A;" title="Ocean Teal"></span>
+            <span class="swatch" style="background: #F5E6D3;" title="Sand Cream"></span>
+            <span class="swatch" style="background: #1A3A52;" title="Faded Navy"></span>
+            <span class="swatch" style="background: #FEFEF0;" title="Vintage White"></span>
+            <span class="swatch" style="background: #E8915B;" title="Sunset Coral"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image" style="background: linear-gradient(135deg, #F5E6D3 0%, #e8d5c0 100%);">
+          <span class="product-icon">🧥</span>
+        </div>
+        <div class="product-info">
+          <h3>The Lifeguard Pullover Hoodie</h3>
+          <p class="product-desc">10 oz heavyweight. Seagull front. The off-duty uniform.</p>
+          <span class="price">$68</span>
+          <div class="color-swatches">
+            <span class="swatch" style="background: #2B7A7A;"></span>
+            <span class="swatch" style="background: #F5E6D3;"></span>
+            <span class="swatch" style="background: #555;"></span>
+            <span class="swatch" style="background: #1A3A52;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image" style="background: linear-gradient(135deg, #1A3A52 0%, #2a5a72 100%);">
+          <span class="product-icon">🧢</span>
+        </div>
+        <div class="product-info">
+          <h3>The Tower Cap</h3>
+          <p class="product-desc">Unstructured. Brass buckle. Leather back patch.</p>
+          <span class="price">$32</span>
+          <div class="color-swatches">
+            <span class="swatch" style="background: #2B7A7A;"></span>
+            <span class="swatch" style="background: #F5E6D3;"></span>
+            <span class="swatch" style="background: #1A3A52;"></span>
+            <span class="swatch" style="background: #FEFEF0;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image" style="background: linear-gradient(135deg, #E8915B 0%, #d4804e 100%);">
+          <span class="product-icon">🩳</span>
+        </div>
+        <div class="product-info">
+          <h3>Beach Guard Shorts</h3>
+          <p class="product-desc">Quick-dry. 4-way stretch. Waterproof zip pocket.</p>
+          <span class="price">$48</span>
+          <div class="color-swatches">
+            <span class="swatch" style="background: #2B7A7A;"></span>
+            <span class="swatch" style="background: #F5E6D3;"></span>
+            <span class="swatch" style="background: #1A3A52;"></span>
+            <span class="swatch" style="background: #555;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image" style="background: linear-gradient(135deg, #555 0%, #444 100%);">
+          <span class="product-icon">👔</span>
+        </div>
+        <div class="product-info">
+          <h3>Watchtower Crewneck</h3>
+          <p class="product-desc">Reverse weave. Won't shrink. Built to outlast everything.</p>
+          <span class="price">$58</span>
+          <div class="color-swatches">
+            <span class="swatch" style="background: #FEFEF0;"></span>
+            <span class="swatch" style="background: #F5E6D3;"></span>
+            <span class="swatch" style="background: #555;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image" style="background: linear-gradient(135deg, #D64545 0%, #b93c3c 100%);">
+          <span class="product-icon">🌬️</span>
+        </div>
+        <div class="product-info">
+          <h3>Watchtower Windbreaker</h3>
+          <p class="product-desc">Water-resistant. Stowaway hood. Packs into its pocket.</p>
+          <span class="price">$88</span>
+          <div class="color-swatches">
+            <span class="swatch" style="background: #2B7A7A;"></span>
+            <span class="swatch" style="background: #1A3A52;"></span>
+            <span class="swatch" style="background: #222;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section id="story" class="story">
+    <div class="story-container">
+      <div class="story-visual">
+        <div class="seagull-container">🦅</div>
+      </div>
+      <div class="story-text">
+        <h2>Guardians of the Coast</h2>
+        <p>Not every hero wears a cape. Some wear trunks, carry whistles, and watch over the shoreline.</p>
+        <p><span class="highlight">The Guards</span> was born from those who protect — lifeguards, beach lovers, coastal wanderers. People who respect the ocean and the community it creates.</p>
+        <p>This is for the ones who show up, watch out, and <span class="highlight">carry the whistle</span>.</p>
+        <a href="#" class="btn btn-outline" style="margin-top: 1rem; display: inline-block;">Read Full Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collections -->
+  <section id="collections" class="collections">
+    <h2 class="section-title">Shop by Collection</h2>
+    <p class="section-subtitle">Find your fit</p>
+    <div class="collection-grid">
+      <div class="collection-card">
+        <div class="collection-icon">🛟</div>
+        <h3>Guard Essentials</h3>
+        <p>Core tees, hoodies, shorts</p>
+      </div>
+      <div class="collection-card">
+        <div class="collection-icon">🏖️</div>
+        <h3>Off-Duty</h3>
+        <p>Casual beachwear, caps</p>
+      </div>
+      <div class="collection-card">
+        <div class="collection-icon">🗼</div>
+        <h3>Watchtower</h3>
+        <p>Premium outerwear, tech gear</p>
+      </div>
+      <div class="collection-card">
+        <div class="collection-icon">🎒</div>
+        <h3>Accessories</h3>
+        <p>Hats, bags, towels, stickers</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values">
+    <div class="values-grid">
+      <div class="value-item">
+        <h3>Authentic</h3>
+        <p>Born from real lifeguard culture. Not a costume. Not a tourist gimmick. The real thing.</p>
+      </div>
+      <div class="value-item">
+        <h3>Quality</h3>
+        <p>Premium fabrics. Embroidered details. Built to last through salt, sun, and a hundred washes.</p>
+      </div>
+      <div class="value-item">
+        <h3>Community</h3>
+        <p>You're not just wearing a brand. You're joining the watch. Guardians protect their coast.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Email Signup -->
+  <section class="signup">
+    <h2>Join the Watch</h2>
+    <p>Early access to new drops, beach culture content, and exclusive deals for Guards only.</p>
+    <form class="signup-form" onsubmit="event.preventDefault(); this.innerHTML='<p style=\'padding:1rem;color:var(--sand-cream);\'>You\'re on the list. Stay salty.</p>';">
+      <input type="email" placeholder="Your email" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p class="fine-print">No spam. Just good coastal energy.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">THE GUARDS</div>
+        <p>Coastal apparel for the watchful. Built for lifeguards, beach lovers, and coastal guardians.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">All Products</a></li>
+          <li><a href="#">Tees</a></li>
+          <li><a href="#">Hoodies</a></li>
+          <li><a href="#">Hats</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Brand</h4>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">The Guard Code</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 The Guards. Coastal Watch. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

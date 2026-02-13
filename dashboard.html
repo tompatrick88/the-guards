@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Guards — Brand Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ocean-teal: #2B7A7A;
+      --guard-red: #D64545;
+      --sand-cream: #F5E6D3;
+      --deep-navy: #1A3A52;
+      --sunset-orange: #E8915B;
+      --wave-white: #FEFEF9;
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Header */
+    .dash-header {
+      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--ocean-teal) 100%);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+
+    .dash-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--wave-white);
+      letter-spacing: 4px;
+    }
+
+    .dash-header h1 span {
+      color: var(--sunset-orange);
+      font-size: 0.7em;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 2px;
+      margin-left: 1rem;
+      font-weight: 600;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .header-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .header-links a:hover { color: white; }
+
+    /* Tab Navigation */
+    .tab-nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 3rem;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      position: sticky;
+      top: 68px;
+      z-index: 99;
+    }
+
+    .tab-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover { color: var(--ocean-teal); }
+    .tab-btn.active {
+      color: var(--ocean-teal);
+      border-bottom-color: var(--ocean-teal);
+    }
+
+    /* Main content */
+    .dash-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 3rem;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+
+    .card-header {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Metric cards */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--ocean-teal);
+      letter-spacing: 1px;
+    }
+
+    .metric-value.red { color: var(--guard-red); }
+    .metric-value.orange { color: var(--sunset-orange); }
+    .metric-value.navy { color: var(--deep-navy); }
+
+    .metric-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Grid layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+
+    /* Color palette display */
+    .color-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .color-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .color-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .color-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .color-hex {
+      font-family: monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Product table */
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .product-table th {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: left;
+      padding: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .product-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .product-table tr:hover {
+      background: rgba(43, 122, 122, 0.03);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-teal { background: rgba(43,122,122,0.1); color: var(--ocean-teal); }
+    .badge-red { background: rgba(214,69,69,0.1); color: var(--guard-red); }
+    .badge-orange { background: rgba(232,145,91,0.1); color: var(--sunset-orange); }
+    .badge-navy { background: rgba(26,58,82,0.1); color: var(--deep-navy); }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.25rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--ocean-teal);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--ocean-teal);
+    }
+
+    .timeline-item h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-item p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .timeline-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--sunset-orange);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Calendar grid */
+    .calendar-week {
+      display: grid;
+      grid-template-columns: 80px repeat(7, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .cal-header {
+      background: var(--ocean-teal);
+      color: white;
+      padding: 0.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .cal-label {
+      background: var(--deep-navy);
+      color: white;
+      padding: 0.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cal-cell {
+      background: white;
+      padding: 0.4rem;
+      font-size: 0.65rem;
+      line-height: 1.3;
+      min-height: 50px;
+    }
+
+    .cal-cell.highlight { background: rgba(43,122,122,0.06); }
+
+    /* Cost breakdown bars */
+    .cost-bar-container {
+      margin-bottom: 0.75rem;
+    }
+
+    .cost-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+      font-size: 0.8rem;
+    }
+
+    .cost-bar-label span:last-child {
+      font-weight: 700;
+      color: var(--ocean-teal);
+    }
+
+    .cost-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .cost-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--ocean-teal), var(--sunset-orange));
+    }
+
+    /* Lists */
+    .checklist li {
+      list-style: none;
+      padding: 0.4rem 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .checklist li::before {
+      content: '○ ';
+      color: var(--ocean-teal);
+      font-weight: 700;
+    }
+
+    .checklist li.done::before {
+      content: '● ';
+      color: var(--ocean-teal);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .dash-content { padding: 1.5rem; }
+      .dash-header { padding: 1.5rem; }
+      .tab-nav { padding: 0 1rem; }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="dash-header">
+    <h1>THE GUARDS <span>Brand Dashboard</span></h1>
+    <div class="header-links">
+      <a href="index.html">Landing Page</a>
+      <a href="#">Export PDF</a>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="products">Products</button>
+    <button class="tab-btn" data-tab="brand">Brand System</button>
+    <button class="tab-btn" data-tab="marketing">Marketing</button>
+    <button class="tab-btn" data-tab="social">Social Calendar</button>
+    <button class="tab-btn" data-tab="manufacturing">Manufacturing</button>
+    <button class="tab-btn" data-tab="financials">Financials</button>
+    <button class="tab-btn" data-tab="launch">Launch Plan</button>
+  </div>
+
+  <div class="dash-content">
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-panel active" id="overview">
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-value">13</div>
+          <div class="metric-label">Total Products</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value red">$8 – $88</div>
+          <div class="metric-label">Price Range</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value orange">3</div>
+          <div class="metric-label">Gift Bundles</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value navy">18-35</div>
+          <div class="metric-label">Target Age</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">30-35%</div>
+          <div class="metric-label">Profit Margin Target</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value red">$15-50K</div>
+          <div class="metric-label">Launch Investment</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Brand Identity</div>
+          <p style="font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">
+            <strong>Core Identity:</strong> Premium beach lifestyle clothing with authentic lifeguard heritage<br>
+            <strong>Energy:</strong> Sun-soaked confidence, coastal cool, guardian of the beach vibe<br>
+            <strong>Target:</strong> Beach culture enthusiasts, coastal residents, surf/swim lifestyle<br>
+            <strong>Positioning:</strong> Above fast fashion, below premium surf brands
+          </p>
+          <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">
+            <em>"Not every hero wears a cape. Some wear trunks, carry whistles, and watch over the shoreline."</em>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Competitive Edge</div>
+          <table class="product-table">
+            <tr><td><strong>vs Chubbies</strong></td><td>Cleaner, more premium aesthetic</td></tr>
+            <tr><td><strong>vs Salt Life</strong></td><td>Younger, cooler positioning</td></tr>
+            <tr><td><strong>vs RVCA</strong></td><td>More accessible price point</td></tr>
+          </table>
+          <div style="margin-top:1rem;">
+            <span class="badge badge-teal">Authentic Heritage</span>
+            <span class="badge badge-red">Guardian Narrative</span>
+            <span class="badge badge-orange">Community-First</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">Revenue Streams</div>
+          <ul class="checklist">
+            <li class="done">Direct-to-Consumer (primary)</li>
+            <li>Wholesale — surf shops, boutiques</li>
+            <li>Pop-ups — beach town activations</li>
+            <li>Collabs — limited drops</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">Content Pillars</div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>The Guard Life</span><span>40%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:40%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Product/Lifestyle</span><span>30%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:30%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Coastal Culture</span><span>20%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:20%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Community</span><span>10%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:10%"></div></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">Key Taglines</div>
+          <ul class="checklist">
+            <li>"Guardians of the Coast"</li>
+            <li>"For Those Who Watch the Water"</li>
+            <li>"Carry the Whistle"</li>
+            <li>"Where the Sand Meets the Street"</li>
+            <li>"Built for Beach People"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS TAB -->
+    <div class="tab-panel" id="products">
+      <div class="metrics-row">
+        <div class="metric-card"><div class="metric-value">5</div><div class="metric-label">Core Collection</div></div>
+        <div class="metric-card"><div class="metric-value orange">5</div><div class="metric-label">Accessories</div></div>
+        <div class="metric-card"><div class="metric-value red">3</div><div class="metric-label">Premium Line</div></div>
+        <div class="metric-card"><div class="metric-value navy">3</div><div class="metric-label">Gift Bundles</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-header">Full Product Catalog</div>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Code</th>
+              <th>Price</th>
+              <th>Line</th>
+              <th>Material</th>
+              <th>Colorways</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Original Pocket Tee</strong></td><td>GRD-PT-001</td><td>$34</td><td><span class="badge badge-teal">Core</span></td><td>100% ring-spun cotton, 6.5 oz</td><td>5</td></tr>
+            <tr><td><strong>Lifeguard Pullover Hoodie</strong></td><td>GRD-HD-001</td><td>$68</td><td><span class="badge badge-teal">Core</span></td><td>80/20 cotton-poly, 10 oz</td><td>4</td></tr>
+            <tr><td><strong>Tower Cap</strong></td><td>GRD-HAT-001</td><td>$32</td><td><span class="badge badge-teal">Core</span></td><td>Unstructured 6-panel, brass buckle</td><td>5</td></tr>
+            <tr><td><strong>Beach Guard Shorts</strong></td><td>GRD-SH-001</td><td>$48</td><td><span class="badge badge-teal">Core</span></td><td>Quick-dry poly, 4-way stretch</td><td>5</td></tr>
+            <tr><td><strong>Watchtower Crewneck</strong></td><td>GRD-CR-001</td><td>$58</td><td><span class="badge badge-teal">Core</span></td><td>80/20 reverse weave, 9 oz</td><td>3</td></tr>
+            <tr><td><strong>Beach Patrol Towel</strong></td><td>—</td><td>$32-38</td><td><span class="badge badge-orange">Accessory</span></td><td>Turkish cotton / microfiber</td><td>2</td></tr>
+            <tr><td><strong>Coastal Carry Tote</strong></td><td>—</td><td>$28</td><td><span class="badge badge-orange">Accessory</span></td><td>12 oz natural canvas</td><td>1</td></tr>
+            <tr><td><strong>Guard Kit Stickers</strong></td><td>—</td><td>$8</td><td><span class="badge badge-orange">Accessory</span></td><td>Vinyl, waterproof, UV-resistant</td><td>—</td></tr>
+            <tr><td><strong>Whistle Keychain</strong></td><td>—</td><td>$12</td><td><span class="badge badge-orange">Accessory</span></td><td>Metal whistle, leather strap</td><td>2</td></tr>
+            <tr><td><strong>Beach Guard Socks</strong></td><td>—</td><td>$14/$36</td><td><span class="badge badge-orange">Accessory</span></td><td>Cotton blend, arch support</td><td>1</td></tr>
+            <tr><td><strong>Watchtower Windbreaker</strong></td><td>GRD-WB-001</td><td>$88</td><td><span class="badge badge-red">Premium</span></td><td>Water-resistant nylon, mesh lined</td><td>3</td></tr>
+            <tr><td><strong>Performance Guard Tee</strong></td><td>GRD-PERF-001</td><td>$38</td><td><span class="badge badge-red">Premium</span></td><td>Moisture-wicking poly, UPF 50+</td><td>4</td></tr>
+            <tr><td><strong>Board Short Edition</strong></td><td>GRD-BS-001</td><td>$58</td><td><span class="badge badge-red">Premium</span></td><td>4-way stretch, scalloped hem</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">The Starter Pack — $65</div>
+          <ul class="checklist">
+            <li>Original Pocket Tee ($34)</li>
+            <li>Tower Cap ($32)</li>
+            <li>Sticker Pack ($8)</li>
+          </ul>
+          <p style="font-size:0.8rem;color:var(--guard-red);font-weight:700;margin-top:0.75rem;">Save $9</p>
+        </div>
+        <div class="card">
+          <div class="card-header">The Full Guard Kit — $175</div>
+          <ul class="checklist">
+            <li>Lifeguard Hoodie ($68)</li>
+            <li>Beach Guard Shorts ($48)</li>
+            <li>Tower Cap ($32)</li>
+            <li>Beach Patrol Towel ($38)</li>
+            <li>Whistle Keychain ($12)</li>
+          </ul>
+          <p style="font-size:0.8rem;color:var(--guard-red);font-weight:700;margin-top:0.75rem;">Save $21</p>
+        </div>
+        <div class="card">
+          <div class="card-header">The Off-Duty Bundle — $115</div>
+          <ul class="checklist">
+            <li>Watchtower Crewneck ($58)</li>
+            <li>Beach Guard Shorts ($48)</li>
+            <li>Coastal Carry Tote ($28)</li>
+          </ul>
+          <p style="font-size:0.8rem;color:var(--guard-red);font-weight:700;margin-top:0.75rem;">Save $11</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRAND SYSTEM TAB -->
+    <div class="tab-panel" id="brand">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Color Palette</div>
+          <h4 style="font-family:'Montserrat';font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem;">Primary</h4>
+          <div class="color-row" style="margin-bottom:1.5rem;">
+            <div class="color-chip"><div class="color-circle" style="background:#2B7A7A;"></div><div class="color-name">Ocean Teal</div><div class="color-hex">#2B7A7A</div></div>
+            <div class="color-chip"><div class="color-circle" style="background:#D64545;"></div><div class="color-name">Guard Red</div><div class="color-hex">#D64545</div></div>
+            <div class="color-chip"><div class="color-circle" style="background:#F5E6D3;"></div><div class="color-name">Sand Cream</div><div class="color-hex">#F5E6D3</div></div>
+          </div>
+          <h4 style="font-family:'Montserrat';font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem;">Secondary</h4>
+          <div class="color-row">
+            <div class="color-chip"><div class="color-circle" style="background:#1A3A52;"></div><div class="color-name">Deep Navy</div><div class="color-hex">#1A3A52</div></div>
+            <div class="color-chip"><div class="color-circle" style="background:#E8915B;"></div><div class="color-name">Sunset Orange</div><div class="color-hex">#E8915B</div></div>
+            <div class="color-chip"><div class="color-circle" style="background:#FEFEF9;border-color:#ddd;"></div><div class="color-name">Wave White</div><div class="color-hex">#FEFEF9</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Typography</div>
+          <div style="margin-bottom:1.5rem;">
+            <p style="font-family:'Montserrat';font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Headings</p>
+            <p style="font-family:'Bebas Neue';font-size:2.5rem;letter-spacing:4px;color:var(--deep-navy);">THE GUARDS</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);">Bebas Neue / Montserrat Bold — All caps, headlines</p>
+          </div>
+          <div style="margin-bottom:1.5rem;">
+            <p style="font-family:'Montserrat';font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Body</p>
+            <p style="font-family:'Open Sans';font-size:1rem;line-height:1.6;">Quality you can feel. Built for guardians of the coast.</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);">Open Sans / Roboto — Regular for paragraphs</p>
+          </div>
+          <div>
+            <p style="font-family:'Montserrat';font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Accent</p>
+            <p style="font-family:'Courier New';font-size:0.9rem;">GRD-PT-001 | EST. 2026</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);">Courier New — Product codes, dates</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Logo System</div>
+          <table class="product-table">
+            <tr><td><strong>Primary Logo</strong></td><td>Seagull on Life Ring</td><td><span class="badge badge-teal">Main branding</span></td></tr>
+            <tr><td><strong>Secondary Logo</strong></td><td>Life Ring Only</td><td><span class="badge badge-orange">Minimal uses</span></td></tr>
+            <tr><td><strong>Brand Mascot</strong></td><td>Seagull with Whistle</td><td><span class="badge badge-navy">Social / storytelling</span></td></tr>
+          </table>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:1rem;">Minimum size: 1.5" print / 120px digital. Clear space: 0.25x logo height.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Brand Voice</div>
+          <div style="margin-bottom:1rem;">
+            <span class="badge badge-teal">Confident</span>
+            <span class="badge badge-teal">Authentic</span>
+            <span class="badge badge-teal">Warm</span>
+            <span class="badge badge-teal">Protective</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;">
+            <strong style="color:var(--ocean-teal);">Good:</strong> "Left chest life ring. Soft-wash cotton. Built to last."
+          </p>
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;">
+            <strong style="color:var(--guard-red);">Bad:</strong> "OMG this tee is EVERYTHING!!! Perfect for beach vibes!!"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKETING TAB -->
+    <div class="tab-panel" id="marketing">
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">Phase 1: Launch (Mo 1-3)</div>
+          <p style="font-size:0.85rem;font-weight:700;color:var(--ocean-teal);margin-bottom:0.75rem;">Goal: 500 customers, establish aesthetic</p>
+          <ul class="checklist">
+            <li>Instagram/TikTok-first content</li>
+            <li>5-10 micro-influencers</li>
+            <li>"Where's your tower?" UGC campaign</li>
+            <li>Pre-launch waitlist (15% off)</li>
+            <li>Story-driven content</li>
+          </ul>
+          <p style="font-size:0.8rem;font-weight:700;color:var(--sunset-orange);margin-top:1rem;">Budget: $8-12K</p>
+        </div>
+        <div class="card">
+          <div class="card-header">Phase 2: Growth (Mo 4-9)</div>
+          <p style="font-size:0.85rem;font-weight:700;color:var(--ocean-teal);margin-bottom:0.75rem;">Goal: $30K/month revenue</p>
+          <ul class="checklist">
+            <li>Retargeting campaigns</li>
+            <li>Email flows (welcome, abandoned cart)</li>
+            <li>Seasonal drops</li>
+            <li>2-3 pop-up shops</li>
+            <li>TikTok Shop integration</li>
+          </ul>
+          <p style="font-size:0.8rem;font-weight:700;color:var(--sunset-orange);margin-top:1rem;">Budget: $15-20K/month</p>
+        </div>
+        <div class="card">
+          <div class="card-header">Phase 3: Scale (Mo 10-18)</div>
+          <p style="font-size:0.85rem;font-weight:700;color:var(--ocean-teal);margin-bottom:0.75rem;">Goal: $100K+/month</p>
+          <ul class="checklist">
+            <li>30-50 wholesale shops</li>
+            <li>Sponsored athlete program</li>
+            <li>YouTube documentaries</li>
+            <li>Women's/kids line expansion</li>
+            <li>International shipping</li>
+          </ul>
+          <p style="font-size:0.8rem;font-weight:700;color:var(--sunset-orange);margin-top:1rem;">Potential: Shark Tank / raise</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">E-Commerce KPIs</div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Conversion Rate</span><span>2-3%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:25%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Avg Order Value</span><span>$75-90</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:60%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Customer Acq. Cost</span><span>&lt;$30</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:30%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>ROAS</span><span>3:1 min</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:50%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Email List Growth</span><span>500+/mo</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:40%"></div></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Influencer Tiers</div>
+          <table class="product-table">
+            <thead><tr><th>Tier</th><th>Followers</th><th>Compensation</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge badge-teal">Tier 1</span></td><td>1-10K</td><td>Free product</td></tr>
+              <tr><td><span class="badge badge-orange">Tier 2</span></td><td>10-50K</td><td>Free product + $50-100</td></tr>
+              <tr><td><span class="badge badge-red">Tier 3</span></td><td>50K+</td><td>Free product + $200-500</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:1rem;"><strong>Requirements:</strong> 2 feed posts, 3-5 stories, tag @theguardsco</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL CALENDAR TAB -->
+    <div class="tab-panel" id="social">
+      <div class="metrics-row">
+        <div class="metric-card"><div class="metric-value">90</div><div class="metric-label">Day Content Plan</div></div>
+        <div class="metric-card"><div class="metric-value red">50</div><div class="metric-label">TikTok Video Ideas</div></div>
+        <div class="metric-card"><div class="metric-value orange">4</div><div class="metric-label">Recurring Series</div></div>
+        <div class="metric-card"><div class="metric-value navy">3</div><div class="metric-label">Platforms</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-header">Week 1: Pre-Launch Teaser → Launch Day</div>
+        <div class="calendar-week">
+          <div class="cal-header"></div>
+          <div class="cal-header">Mon</div>
+          <div class="cal-header">Tue</div>
+          <div class="cal-header">Wed</div>
+          <div class="cal-header">Thu</div>
+          <div class="cal-header" style="background:var(--guard-red);">Fri ★</div>
+          <div class="cal-header">Sat</div>
+          <div class="cal-header">Sun</div>
+          <div class="cal-label">IG Feed</div>
+          <div class="cal-cell">Logo reveal "Something's watching"</div>
+          <div class="cal-cell">Texture close-up "Quality you can feel"</div>
+          <div class="cal-cell">Tower at sunset "Launching Friday"</div>
+          <div class="cal-cell">Product flat lay "24 hours"</div>
+          <div class="cal-cell highlight"><strong>LAUNCH!</strong> Hero shot, golden hour</div>
+          <div class="cal-cell">First orders "Check your mailbox"</div>
+          <div class="cal-cell">UGC repost, first customer</div>
+          <div class="cal-label">TikTok</div>
+          <div class="cal-cell">—</div>
+          <div class="cal-cell">POV: new beach brand</div>
+          <div class="cal-cell">—</div>
+          <div class="cal-cell">Quick cuts hype video</div>
+          <div class="cal-cell highlight">"We just launched" video</div>
+          <div class="cal-cell">—</div>
+          <div class="cal-cell">—</div>
+          <div class="cal-label">Stories</div>
+          <div class="cal-cell">BTS photoshoot</div>
+          <div class="cal-cell">—</div>
+          <div class="cal-cell">Poll: "Tees or hoodies?"</div>
+          <div class="cal-cell">—</div>
+          <div class="cal-cell highlight">10+ slides: product highlights + discount code</div>
+          <div class="cal-cell">Unboxing reel</div>
+          <div class="cal-cell">—</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Recurring Series</div>
+          <table class="product-table">
+            <tr><td><strong>Tower Tuesday</strong></td><td>Spotlight different lifeguard towers/beaches</td></tr>
+            <tr><td><strong>Whistle Worthy Wednesday</strong></td><td>Beach safety tips, ocean facts</td></tr>
+            <tr><td><strong>Guard of the Week</strong></td><td>Friday customer/follower feature</td></tr>
+            <tr><td><strong>Seagull Sundays</strong></td><td>Fun mascot scenarios, character building</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Hashtag Strategy</div>
+          <div style="margin-bottom:0.75rem;">
+            <p style="font-size:0.7rem;font-weight:700;color:var(--ocean-teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem;">Brand (own these)</p>
+            <span class="badge badge-teal">#TheGuards</span>
+            <span class="badge badge-teal">#TheGuardsLife</span>
+            <span class="badge badge-teal">#GuardsOnDuty</span>
+            <span class="badge badge-teal">#WhereIsYourTower</span>
+          </div>
+          <div style="margin-bottom:0.75rem;">
+            <p style="font-size:0.7rem;font-weight:700;color:var(--sunset-orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem;">Large (500K+)</p>
+            <span class="badge badge-orange">#BeachLife</span>
+            <span class="badge badge-orange">#CoastalLiving</span>
+            <span class="badge badge-orange">#SurfCulture</span>
+          </div>
+          <div>
+            <p style="font-size:0.7rem;font-weight:700;color:var(--deep-navy);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem;">Niche (5-50K)</p>
+            <span class="badge badge-navy">#BeachApparel</span>
+            <span class="badge badge-navy">#LifeguardStyle</span>
+            <span class="badge badge-navy">#CoastalFashion</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">90-Day Social Goals</div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Instagram Followers</span><span>5,000+</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:50%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>TikTok Followers</span><span>3,000+</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:30%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Engagement Rate</span><span>3-5%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:40%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Monthly Site Visitors from Social</span><span>10,000+</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:65%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>UGC Posts</span><span>50+</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:35%"></div></div></div>
+      </div>
+    </div>
+
+    <!-- MANUFACTURING TAB -->
+    <div class="tab-panel" id="manufacturing">
+      <div class="grid-3">
+        <div class="card" style="border-left:4px solid var(--ocean-teal);">
+          <div class="card-header">Phase 1: Print-on-Demand</div>
+          <p style="font-size:0.85rem;font-weight:700;color:var(--ocean-teal);margin-bottom:0.75rem;">Months 1-3 | $0-500 investment</p>
+          <ul class="checklist">
+            <li class="done">Printful (recommended)</li>
+            <li>Printify (backup option)</li>
+            <li>Zero inventory risk</li>
+            <li>Test colors/sizes with real data</li>
+          </ul>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;">Tee cost: ~$13-16 | Sell: $34 | Profit: $14-18</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--sunset-orange);">
+          <div class="card-header">Phase 2: Small Batch</div>
+          <p style="font-size:0.85rem;font-weight:700;color:var(--sunset-orange);margin-bottom:0.75rem;">Months 3-6 | $2-10K investment</p>
+          <ul class="checklist">
+            <li>AS Colour blanks + local embroidery</li>
+            <li>Bella+Canvas Direct</li>
+            <li>100-300 unit runs</li>
+            <li>Better margins on proven sellers</li>
+          </ul>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;">Tee cost: ~$12-16 | Sell: $34 | Profit: $15-20</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--guard-red);">
+          <div class="card-header">Phase 3: Bulk Manufacturing</div>
+          <p style="font-size:0.85rem;font-weight:700;color:var(--guard-red);margin-bottom:0.75rem;">Months 7-12 | $15-30K investment</p>
+          <ul class="checklist">
+            <li>Royal Apparel (US, ethical)</li>
+            <li>LA Apparel (premium)</li>
+            <li>Bangladesh/Vietnam (cost)</li>
+            <li>500-1000+ unit runs</li>
+          </ul>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;">Tee cost: ~$9 | Sell: $34 | Profit: $20</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Accessory Suppliers</div>
+          <table class="product-table">
+            <thead><tr><th>Product</th><th>Supplier</th><th>Min Order</th><th>Cost/Unit</th></tr></thead>
+            <tbody>
+              <tr><td>Hats</td><td>Imperial Headwear</td><td>144</td><td>$5-8</td></tr>
+              <tr><td>Hats</td><td>Yupoong/Flexfit</td><td>72</td><td>$6-10</td></tr>
+              <tr><td>Towels</td><td>Towel Supercenter</td><td>50</td><td>$8-15</td></tr>
+              <tr><td>Tote Bags</td><td>Bagsmith</td><td>50</td><td>$8-12</td></tr>
+              <tr><td>Stickers</td><td>Sticker Mule</td><td>10</td><td>$1-3</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Quality Checklist</div>
+          <ul class="checklist">
+            <li>Fabric weight/thickness — premium feel?</li>
+            <li>Softness — would you wear it?</li>
+            <li>10+ wash durability test</li>
+            <li>Color accuracy vs brand palette</li>
+            <li>Stitch quality — no loose threads</li>
+            <li>Logo placement accuracy</li>
+            <li>Embroidery stitch count (12K+)</li>
+            <li>Backing smoothness (not scratchy)</li>
+            <li>5x wash shrinkage test</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCIALS TAB -->
+    <div class="tab-panel" id="financials">
+      <div class="metrics-row">
+        <div class="metric-card"><div class="metric-value">$15-20K</div><div class="metric-label">Minimum Launch</div></div>
+        <div class="metric-card"><div class="metric-value orange">$35-50K</div><div class="metric-label">Recommended Launch</div></div>
+        <div class="metric-card"><div class="metric-value red">$300-500K</div><div class="metric-label">Year 1 Revenue Target</div></div>
+        <div class="metric-card"><div class="metric-value navy">30-35%</div><div class="metric-label">Profit Margin Target</div></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Minimum Launch Breakdown ($15-20K)</div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Inventory (200-300 units)</span><span>$8-10K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:50%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Website & Branding</span><span>$2-3K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:15%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Initial Marketing</span><span>$3-5K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:25%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Operations/Misc</span><span>$2K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:10%"></div></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Recommended Launch Breakdown ($35-50K)</div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Inventory (500-750 units)</span><span>$18-22K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:48%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Website/Branding/Photo</span><span>$8-10K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:22%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Marketing (3-mo runway)</span><span>$12-15K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:32%"></div></div></div>
+          <div class="cost-bar-container"><div class="cost-bar-label"><span>Operations/Legal/Misc</span><span>$3-5K</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:10%"></div></div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-header">Unit Economics — Original Pocket Tee ($34)</div>
+        <table class="product-table">
+          <thead><tr><th>Phase</th><th>Blank</th><th>Embroidery</th><th>Total Cost</th><th>Gross Profit</th><th>After Fees</th><th>Margin</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-teal">POD</span></td><td>$7.95</td><td>$7.00</td><td>$14.95</td><td>$19.05</td><td>~$14</td><td>41%</td></tr>
+            <tr><td><span class="badge badge-orange">Small Batch</span></td><td>$9.00</td><td>$5.00</td><td>$14.00</td><td>$20.00</td><td>~$15</td><td>44%</td></tr>
+            <tr><td><span class="badge badge-red">Bulk</span></td><td>$6.00</td><td>$3.00</td><td>$9.00</td><td>$25.00</td><td>~$20</td><td>59%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header">Cost Structure</div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Manufacturing (COGS)</span><span>25-30%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:28%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Marketing</span><span>20-25%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:23%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Operations</span><span>15-20%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:18%"></div></div></div>
+        <div class="cost-bar-container"><div class="cost-bar-label"><span>Profit</span><span>30-35%</span></div><div class="cost-bar"><div class="cost-bar-fill" style="width:33%;background:linear-gradient(90deg, #2B7A7A, #1A3A52);"></div></div></div>
+      </div>
+    </div>
+
+    <!-- LAUNCH PLAN TAB -->
+    <div class="tab-panel" id="launch">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Pre-Launch (8-12 Weeks)</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-label">Week 1-2</div>
+              <h4>Brand Foundation</h4>
+              <p>Finalize logo, visual identity. Secure domain. Get vector logo files (.ai/.svg).</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 3-4</div>
+              <h4>Product Development</h4>
+              <p>Design first collection (12-15 pieces). Order 3-5 samples. Source manufacturers.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 5-6</div>
+              <h4>Content & Platform</h4>
+              <p>Build Shopify store. Create 50+ content pieces. Set up Instagram/TikTok.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 7-8</div>
+              <h4>Community Building</h4>
+              <p>Recruit 10 brand ambassadors. Set up email marketing (Klaviyo). Build waitlist.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 9-10</div>
+              <h4>Soft Launch</h4>
+              <p>Friends & family test run. Work out bugs. Gather feedback.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Launch Week + First 90 Days</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-label">Launch Day</div>
+              <h4>Go Live</h4>
+              <p>Email blast to waitlist. All influencer posts go live. Meta/TikTok ads launch. 20% off first 48 hours.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 1-4</div>
+              <h4>Momentum</h4>
+              <p>Daily social content (3-5 posts/day). Weekly email to list. PR push to coastal/surf media.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 5-8</div>
+              <h4>Growth Tactics</h4>
+              <p>Retargeting campaigns. Email flows (welcome, abandoned cart). Heavy UGC push.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-label">Week 9-12</div>
+              <h4>Scale & Learn</h4>
+              <p>Monitor metrics (CAC, ROAS, AOV). Plan next collection drop. Transition proven sellers to small batch.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">Pre-Launch Checklist</div>
+        <div class="grid-3" style="margin-bottom:0;">
+          <ul class="checklist">
+            <li>Finalize brand name</li>
+            <li>Secure domain (theguardsco.com)</li>
+            <li>Vector logo files (.ai/.svg)</li>
+            <li>Order product samples (3-5)</li>
+          </ul>
+          <ul class="checklist">
+            <li>2-day beach photoshoot</li>
+            <li>Build Shopify store</li>
+            <li>Create 50+ content pieces</li>
+            <li>Set up Instagram & TikTok</li>
+          </ul>
+          <ul class="checklist">
+            <li>Recruit 10 ambassadors</li>
+            <li>Set up Klaviyo email</li>
+            <li>Friends/family soft launch</li>
+            <li>Configure Printful integration</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
