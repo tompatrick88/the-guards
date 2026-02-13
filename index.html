@@ -29,15 +29,15 @@
       overflow-x: hidden;
     }
 
-    /* Grain overlay */
+    /* Grain overlay — heavier for gritty retro feel */
     .grain {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-repeat: repeat;
       background-size: 256px;
     }
@@ -120,18 +120,156 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Life ring SVG logo */
-    .life-ring {
-      width: 140px;
-      height: 140px;
+    /* Hero logo image */
+    .hero-logo {
+      width: 220px;
+      height: 220px;
       margin: 0 auto 2rem;
       animation: fadeUp 1s ease-out 0.3s both;
     }
 
-    .life-ring svg {
+    .hero-logo img {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 4px 20px rgba(0,0,0,0.2));
+      object-fit: contain;
+      filter: drop-shadow(0 8px 30px rgba(0,0,0,0.3));
+    }
+
+    /* Brand image gallery strip */
+    .brand-strip {
+      background: var(--sand-cream);
+      padding: 4rem 2rem;
+      overflow: hidden;
+    }
+
+    .brand-strip-inner {
+      display: flex;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .brand-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      transition: transform 0.4s;
+    }
+
+    .brand-img:hover {
+      transform: scale(1.05) rotate(-1deg);
+    }
+
+    /* Mockup section */
+    .mockups {
+      background: var(--deep-navy);
+      color: var(--wave-white);
+      padding: 6rem 2rem;
+      position: relative;
+    }
+
+    .mockup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .mockup-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.3s;
+    }
+
+    .mockup-card:hover { transform: translateY(-4px); }
+
+    .mockup-visual {
+      position: relative;
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .mockup-garment {
+      width: 240px;
+      height: 280px;
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mockup-garment .logo-overlay {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      position: absolute;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+
+    .mockup-garment .logo-overlay.chest {
+      top: 35px;
+      left: 30px;
+      width: 50px;
+      height: 50px;
+    }
+
+    .mockup-garment .logo-overlay.center {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+    }
+
+    .mockup-garment .logo-overlay.back {
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      opacity: 0.9;
+    }
+
+    .garment-shape {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+    }
+
+    .mockup-label {
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .mockup-label h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .mockup-label p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .mockup-label .mock-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--sunset-orange);
+      letter-spacing: 1px;
     }
 
     .hero h1 {
@@ -624,18 +762,8 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <div class="life-ring">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#F5E6D3" stroke-width="28"/>
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#D64545" stroke-width="28"
-            stroke-dasharray="31.4 31.4" stroke-dashoffset="-7.85"/>
-          <circle cx="100" cy="100" r="66" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="2"/>
-          <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="2"/>
-          <text x="100" y="95" text-anchor="middle" font-family="Bebas Neue, sans-serif"
-            font-size="18" fill="#F5E6D3" letter-spacing="2">THE</text>
-          <text x="100" y="113" text-anchor="middle" font-family="Bebas Neue, sans-serif"
-            font-size="18" fill="#F5E6D3" letter-spacing="2">GUARDS</text>
-        </svg>
+      <div class="hero-logo">
+        <img src="img/seagull-ring.png" alt="The Guards — Seagull on Life Ring">
       </div>
       <h1>THE GUARDS</h1>
       <p class="tagline">Coastal Apparel for the Watchful</p>
@@ -645,6 +773,17 @@
       </div>
     </div>
     <div class="scroll-indicator"><span></span></div>
+  </section>
+
+  <!-- Brand Image Strip -->
+  <section class="brand-strip">
+    <div class="brand-strip-inner">
+      <img src="img/seagull-whistle.png" alt="The Guards Mascot" class="brand-img">
+      <img src="img/life-ring.png" alt="The Guards Life Ring" class="brand-img">
+      <img src="img/seagull-buoy.png" alt="Seagull on Buoy" class="brand-img">
+      <img src="img/seagull-logo.png" alt="The Guards Logo" class="brand-img">
+      <img src="img/seagull-ring.png" alt="The Guards Primary" class="brand-img">
+    </div>
   </section>
 
   <!-- Featured Products -->
@@ -759,7 +898,9 @@
   <section id="story" class="story">
     <div class="story-container">
       <div class="story-visual">
-        <div class="seagull-container">🦅</div>
+        <div class="seagull-container">
+          <img src="img/seagull-whistle.png" alt="The Guards Mascot" style="width:260px;height:260px;object-fit:contain;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.2));">
+        </div>
       </div>
       <div class="story-text">
         <h2>Guardians of the Coast</h2>
@@ -813,6 +954,65 @@
       <div class="value-item">
         <h3>Community</h3>
         <p>You're not just wearing a brand. You're joining the watch. Guardians protect their coast.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Mockups -->
+  <section class="mockups">
+    <h2 class="section-title" style="color: var(--wave-white);">The Collection</h2>
+    <p class="section-subtitle" style="color: var(--sunset-orange);">Product Mockups</p>
+    <div class="mockup-grid">
+      <!-- Tee mockup - chest logo -->
+      <div class="mockup-card">
+        <div class="mockup-visual" style="background: linear-gradient(145deg, #1E5E5E 0%, #2B7A7A 100%);">
+          <div class="mockup-garment">
+            <svg class="garment-shape" viewBox="0 0 240 280">
+              <path d="M60,0 L80,0 Q90,30 120,35 Q150,30 160,0 L180,0 L240,60 L210,90 L190,70 L190,280 L50,280 L50,70 L30,90 L0,60 Z" fill="#2B7A7A" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            </svg>
+            <img src="img/life-ring.png" class="logo-overlay chest" alt="Logo">
+          </div>
+        </div>
+        <div class="mockup-label">
+          <h3>The Original Pocket Tee</h3>
+          <p>Ocean Teal — Life ring embroidery</p>
+          <div class="mock-price">$34</div>
+        </div>
+      </div>
+
+      <!-- Hoodie mockup - center logo -->
+      <div class="mockup-card">
+        <div class="mockup-visual" style="background: linear-gradient(145deg, #d4c4b0 0%, #F5E6D3 100%);">
+          <div class="mockup-garment">
+            <svg class="garment-shape" viewBox="0 0 240 280">
+              <path d="M75,0 Q85,15 100,20 L100,0 Q110,30 120,35 Q130,30 140,0 L140,20 Q155,15 165,0 L180,0 L240,60 L210,90 L195,75 L195,280 L45,280 L45,75 L30,90 L0,60 L60,0 Z" fill="#F5E6D3" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <path d="M100,0 Q110,30 120,35 Q130,30 140,0" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+            </svg>
+            <img src="img/seagull-ring.png" class="logo-overlay center" alt="Logo">
+          </div>
+        </div>
+        <div class="mockup-label">
+          <h3>The Lifeguard Pullover</h3>
+          <p>Sand Cream — Full seagull graphic</p>
+          <div class="mock-price">$68</div>
+        </div>
+      </div>
+
+      <!-- Crewneck mockup - back print -->
+      <div class="mockup-card">
+        <div class="mockup-visual" style="background: linear-gradient(145deg, #333 0%, #444 100%);">
+          <div class="mockup-garment">
+            <svg class="garment-shape" viewBox="0 0 240 280">
+              <path d="M70,0 L80,0 Q90,25 120,30 Q150,25 160,0 L170,0 L230,50 L205,80 L190,65 L190,280 L50,280 L50,65 L35,80 L10,50 Z" fill="#444" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            </svg>
+            <img src="img/seagull-buoy.png" class="logo-overlay back" alt="Logo">
+          </div>
+        </div>
+        <div class="mockup-label">
+          <h3>Watchtower Crewneck</h3>
+          <p>Charcoal — Back print vintage effect</p>
+          <div class="mock-price">$58</div>
+        </div>
       </div>
     </div>
   </section>
